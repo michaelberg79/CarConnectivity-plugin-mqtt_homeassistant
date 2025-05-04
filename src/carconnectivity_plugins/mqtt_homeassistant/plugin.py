@@ -589,20 +589,33 @@ class Plugin(BasePlugin):  # pylint: disable=too-many-instance-attributes
                     return value
                 # pylint: disable-next=protected-access
                 vehicle.climatization.commands.commands['start-stop']._add_on_set_hook(__mode_to_command_hook, early_hook=True)
-                discovery_message['cmps'][f'{vin}_climatization_start_stop'] = {
+                discovery_message['cmps'][f'{vin}_climatization_temperature'] = {
                         'p': 'climate',
-                        'name': 'Start/Stop Climatization',
+                        'name': 'Temperature Climatization',
                         'icon': 'mdi:air-conditioner',
                         'action_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_action',
-                        'mode_command_topic':
-                        f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.commands.commands["start-stop"].get_absolute_path()}_writetopic',
-                        'mode_state_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_mode',
-                        'modes': ['off', 'auto'],
+                        # 'mode_command_topic':
+                        # f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.commands.commands["start-stop"].get_absolute_path()}_writetopic',
+                        # 'mode_state_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_mode',
+                        # 'modes': ['off', 'auto'],
                         'power_command_topic':
                         f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.commands.commands["start-stop"].get_absolute_path()}'
                         + '_writetopic',
                         'payload_on': 'start',
                         'payload_off': 'stop',
+                        'unique_id': f'{vin}_climatization_temperature'
+                    }
+                discovery_message['cmps'][f'{vin}_climatization_start_stop'] = {
+                        'p': 'switch',
+                        'name': 'Start/Stop Climatization',
+                        'icon': 'mdi:ev-station',
+                        'state_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_action',
+                        'command_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.commands.commands["start-stop"].get_absolute_path()}'
+                        + '_writetopic',
+                        'payload_on': 'start',
+                        'payload_off': 'stop',
+                        'state_on': 'on',
+                        'state_off': 'off',
                         'unique_id': f'{vin}_climatization_start_stop'
                     }
             if vehicle.climatization.settings.enabled and vehicle.climatization.settings.target_temperature.enabled:
