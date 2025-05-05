@@ -609,7 +609,7 @@ class Plugin(BasePlugin):  # pylint: disable=too-many-instance-attributes
                         'p': 'switch',
                         'name': 'Start/Stop Climatization',
                         'icon': 'mdi:ev-station',
-                        'state_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_action',
+                        'state_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_mode',
                         'command_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.commands.commands["start-stop"].get_absolute_path()}'
                         + '_writetopic',
                         'payload_on': 'start',
