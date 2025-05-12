@@ -594,10 +594,10 @@ class Plugin(BasePlugin):  # pylint: disable=too-many-instance-attributes
                         'name': 'Temperature Climatization',
                         'icon': 'mdi:air-conditioner',
                         'action_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_action',
-                        # 'mode_command_topic':
-                        # f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.commands.commands["start-stop"].get_absolute_path()}_writetopic',
-                        # 'mode_state_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_mode',
-                        # 'modes': ['off', 'auto'],
+                        'mode_command_topic':
+                        f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.commands.commands["start-stop"].get_absolute_path()}_writetopic',
+                        'mode_state_topic': f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.get_absolute_path()}/hvac_mode',
+                        'modes': ['off', 'auto'],
                         'power_command_topic':
                         f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.commands.commands["start-stop"].get_absolute_path()}'
                         + '_writetopic',
@@ -614,30 +614,30 @@ class Plugin(BasePlugin):  # pylint: disable=too-many-instance-attributes
                         + '_writetopic',
                         'payload_on': 'start',
                         'payload_off': 'stop',
-                        'state_on': 'on',
+                        'state_on': 'auto',
                         'state_off': 'off',
                         'unique_id': f'{vin}_climatization_start_stop'
                     }
             if vehicle.climatization.settings.enabled and vehicle.climatization.settings.target_temperature.enabled:
                 if vehicle.climatization.settings.target_temperature.value is not None:
-                    discovery_message['cmps'][f'{vin}_climatization_start_stop']['temperature_state_topic'] = \
+                    discovery_message['cmps'][f'{vin}_climatization_temperatur']['temperature_state_topic'] = \
                         f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.settings.target_temperature.get_absolute_path()}'
                 if vehicle.climatization.settings.target_temperature.maximum is not None:
-                    discovery_message['cmps'][f'{vin}_climatization_start_stop']['max_temp'] = vehicle.climatization.settings.target_temperature.maximum
+                    discovery_message['cmps'][f'{vin}_climatization_temperatur']['max_temp'] = vehicle.climatization.settings.target_temperature.maximum
                 if vehicle.climatization.settings.target_temperature.minimum is not None:
-                    discovery_message['cmps'][f'{vin}_climatization_start_stop']['min_temp'] = vehicle.climatization.settings.target_temperature.minimum
+                    discovery_message['cmps'][f'{vin}_climatization_temperatur']['min_temp'] = vehicle.climatization.settings.target_temperature.minimum
                 if vehicle.climatization.settings.target_temperature.precision is not None:
-                    discovery_message['cmps'][f'{vin}_climatization_start_stop']['temp_step'] = vehicle.climatization.settings.target_temperature.precision
+                    discovery_message['cmps'][f'{vin}_climatization_temperatur']['temp_step'] = vehicle.climatization.settings.target_temperature.precision
                 if vehicle.climatization.settings.target_temperature.is_changeable:
-                    discovery_message['cmps'][f'{vin}_climatization_start_stop']['temperature_command_topic'] = \
+                    discovery_message['cmps'][f'{vin}_climatization_temperatur']['temperature_command_topic'] = \
                         f'{self.mqtt_plugin.mqtt_client.prefix}{vehicle.climatization.settings.target_temperature.get_absolute_path()}_writetopic'
                 if vehicle.climatization.settings.target_temperature.unit is not None:
                     _, unit = vehicle.climatization.settings.target_temperature.in_locale(locale=self.mqtt_plugin.mqtt_client.locale)
                     if unit is not None:
                         if unit == Temperature.C:
-                            discovery_message['cmps'][f'{vin}_climatization_start_stop']['temperature_unit'] = 'C'
+                            discovery_message['cmps'][f'{vin}_climatization_temperatur']['temperature_unit'] = 'C'
                         elif unit == Temperature.F:
-                            discovery_message['cmps'][f'{vin}_climatization_start_stop']['temperature_unit'] = 'F'
+                            discovery_message['cmps'][f'{vin}_climatization_temperatur']['temperature_unit'] = 'F'
             if vehicle.climatization.estimated_date_reached.enabled and vehicle.climatization.estimated_date_reached.value is not None:
                 discovery_message['cmps'][f'{vin}_climatization_estimated_date_reached'] = {
                     'p': 'sensor',
